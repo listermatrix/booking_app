@@ -1,7 +1,23 @@
+import Link from "next/link";
+
 export default function Index() {
   return (
-    <div className="pt-8 text-center">
-      <h1 className="text-3xl font-bold">Ship early. Ship often.</h1>
+    <div className="pt-8">
+      <Link href="/auth/login">
+        <a className="p-1 text-white bg-blue-800">LOGIN</a>
+      </Link>
+      <Link href="/auth/signup">
+        <a className="p-1 ml-2 text-white bg-blue-800">SIGN UP</a>
+      </Link>
+      <h1 className="py-4 text-3xl font-bold">Launch something bad quickly.</h1>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/1hHMwLxN6EM"
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen></iframe>
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import { getSession } from "@helpers/auth";
 import { GetServerSidePropsContext } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
+import { getSession } from "@helpers/auth";
 
 interface ServerSideProps {
   csrfToken: string;
