@@ -1,19 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "baseUrl": ".",
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@helpers/*": [
-        "helpers/*"
-      ]
+      "@components/*": ["components/*"],
+      "@helpers/*": ["helpers/*"]
     },
     "skipLibCheck": true,
     "strict": true,
@@ -27,27 +19,16 @@
     "isolatedModules": true,
     "useUnknownInCatchVariables": true,
     "jsx": "preserve",
-    "typeRoots": [
-      "./types"
-    ],
+    "typeRoots": ["./types"],
     "allowJs": true,
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "@types/*.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["next-env.d.ts", "@types/*.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS",
-      "types": [
-        "node"
-      ],
+      "types": ["node"]
     }
   }
 }

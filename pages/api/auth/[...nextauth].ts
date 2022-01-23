@@ -1,7 +1,8 @@
-import { verifyPassword } from "@helpers/auth";
-import prisma from "@helpers/prisma";
 import NextAuth from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
+
+import { verifyPassword } from "@helpers/auth";
+import prisma from "@helpers/prisma";
 
 export default NextAuth({
   providers: [
