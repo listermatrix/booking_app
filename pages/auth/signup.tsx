@@ -1,11 +1,20 @@
 import axios from "axios";
-import { useState } from "react";
+import { getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function redirectOnLogin() {
+      const session = await getSession();
+      if (session) window.location.replace("/");
+    }
+    redirectOnLogin();
+  }, []);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
