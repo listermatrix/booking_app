@@ -30,9 +30,6 @@
     "typeRoots": [
       "./types"
     ],
-    "types": [
-      "@types/jest",
-    ],
     "allowJs": true,
     "incremental": true
   },

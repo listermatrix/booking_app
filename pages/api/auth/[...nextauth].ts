@@ -15,7 +15,9 @@ export default NextAuth({
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: Record<"email" | "password", string> | undefined) {
+        if (!credentials) return null;
+
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email.toLowerCase(),
@@ -24,7 +26,7 @@ export default NextAuth({
 
         if (!user) return null;
 
-        const isCorrectPassword = await verifyPassword(credentials.password, user.password);
+        const isCorrectPassword = await verifyPassword(credentials.password, user.password as string);
         if (isCorrectPassword) {
           return user;
         }
