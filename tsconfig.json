@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["components/*"],
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@pages/*": ["pages/*"],
     },
     "skipLibCheck": true,
     "strict": true,
@@ -20,6 +21,9 @@
     "useUnknownInCatchVariables": true,
     "jsx": "preserve",
     "typeRoots": ["./types"],
+    "types": [
+      "@types/jest",
+    ],
     "allowJs": true,
     "incremental": true
   },
