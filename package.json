@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@prisma/client": "3.8.1",
