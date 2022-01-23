@@ -15,7 +15,7 @@ export default function Login({ csrfToken }: ServerSideProps) {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const callbackUrl = typeof router.query?.callbackUrl === "string" ? router.query.callbackUrl : "/";
+  const callbackUrl = typeof router.query?.callbackUrl === "string" ? router.query.callbackUrl : "/private";
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
