@@ -26,3 +26,5 @@ You can start editing the page by modifying pages/index.tsx. The page auto-updat
 
 The pages/api directory is mapped to /api/*. Files in this directory are treated as API routes instead of React pages.
 
+## TODO: Explain db setup (.env file etc)
+
