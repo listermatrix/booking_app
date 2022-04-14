@@ -20,3 +20,48 @@ model User {
 
   @@map(name: "users")
 }
+
+//model EventType {
+//  id        Int      @id @default(autoincrement())
+//  name      String
+//  email     String   @unique
+//  password  String?
+//  createdAt DateTime @default(now()) @map(name: "created_at")
+//  updatedAt DateTime @updatedAt @map(name: "updated_at")
+//
+//  @@map(name: "event_types")
+//}
+//
+//model Event {
+//  id        Int      @id @default(autoincrement())
+//  name      String
+//  email     String   @unique
+//  password  String?
+//  createdAt DateTime @default(now()) @map(name: "created_at")
+//  updatedAt DateTime @updatedAt @map(name: "updated_at")
+//
+//  @@map(name: "events")
+//}
+//
+//
+//model Attendee {
+//  id        Int      @id @default(autoincrement())
+//  name      String
+//  email     String   @unique
+//  password  String?
+//  createdAt DateTime @default(now()) @map(name: "created_at")
+//  updatedAt DateTime @updatedAt @map(name: "updated_at")
+//
+//  @@map(name: "attendees")
+//}
+//
+//model Company {
+//  id        Int      @id @default(autoincrement())
+//  name      String
+//  email     String   @unique
+//  password  String?
+//  createdAt DateTime @default(now()) @map(name: "created_at")
+//  updatedAt DateTime @updatedAt @map(name: "updated_at")
+//
+//  @@map(name: "companies")
+//}

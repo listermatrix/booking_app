@@ -1,6 +1,8 @@
 import { GetServerSidePropsContext } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import Router from "next/router";
 import { useState } from "react";
 
 import { getSession } from "@helpers/auth";
@@ -19,12 +21,12 @@ export default function Login({ csrfToken }: ServerSideProps) {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
+    console.log("form has been clicked");
 
-    if (isSubmitting) {
+    if (email == "" || password == "") {
+      alert("All fields are required !!!");
       return;
     }
-
-    setIsSubmitting(true);
 
     const response = await signIn<"credentials">("credentials", {
       redirect: false,
@@ -44,34 +46,62 @@ export default function Login({ csrfToken }: ServerSideProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="csrfToken" type="hidden" defaultValue={csrfToken || undefined} hidden />
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="email"
-        required
-        value={email}
-        onInput={(e) => setEmail(e.currentTarget.value)}
-        className="block border border-neutral-300 focus:ring-neutral-900"
-      />
-      <input
-        id="password"
-        name="password"
-        type="password"
-        placeholder="password"
-        autoComplete="current-password"
-        required
-        value={password}
-        onInput={(e) => setPassword(e.currentTarget.value)}
-        className="block border border-neutral-300 focus:ring-neutral-900"
-      />
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      <button type="submit" disabled={isSubmitting} className="p-1 text-white bg-blue-800">
-        SIGN IN
-      </button>
-    </form>
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 ">
+        <h1 className="font-bold">Sign Into your account </h1>
+        <div className="w-full max-w-md">
+          <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+                Email address
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="username"
+                type="text"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                placeholder="Email address"
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                Password
+              </label>
+              <input
+                className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                id="password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                placeholder="**********"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                className="bg-black hover:bg-black-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit">
+                Sign In
+              </button>
+              <a
+                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                href="#">
+                Forgot Password?
+              </a>
+            </div>
+          </form>
+          <p className="text-center text-gray-500 text-xs">
+            Dont have an account ?{" "}
+            <button onClick={() => Router.push("/auth/signup")}>Create an account.</button>
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }
 
