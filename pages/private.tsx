@@ -49,7 +49,7 @@ export default function Manage() {
               role="tab"
               aria-controls="tabs-messages"
               aria-selected="false">
-              Cancelled
+              Cancelled.
             </a>
           </li>
         </ul>
