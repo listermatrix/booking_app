@@ -3,8 +3,6 @@ import prisma from "@helpers/prisma";
 export default async function handle(req, res) {
   const { name, email, _notes, _date, _attendee, _duration } = req.body;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const result = await prisma.booking.create({
     data: {
       schedule_date: _date.toString(),
