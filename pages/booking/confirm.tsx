@@ -1,45 +1,54 @@
 import axios from "axios";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { router } from "next/client";
 import Head from "next/head";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function Signup() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+import prisma from "@helpers/prisma";
 
-  useEffect(() => {
-    async function redirectOnLogin() {
-      const session = await getSession();
-      if (session) window.location.replace("/");
-    }
-    redirectOnLogin();
-  }, []);
+export async function getStaticProps() {
+  const attendees = await prisma.attendee.findMany({
+    select: {
+      id: true,
+      email: true,
+      name: true,
+    },
+  });
+  return {
+    props: {
+      data: attendees,
+    },
+  };
+}
+
+function BookingForm({ data }) {
+  const router = useRouter();
+  const query = router.query;
+  const _date = query.date;
+  const _duration = query.duration;
+  const _attendee = query.attendee;
+  const _notes = query.additionalNotes;
+
+  const { data: session, status } = useSession();
+  const [name, setName] = useState(data[0].name);
+  const [email, setEmail] = useState(data[0].email);
+  // const [attendee, setAttendee] = useState("");
+  const [additionalNotes, setAdditionalNotes] = useState(_notes);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
 
-    if (isSubmitting) {
-      return;
-    }
-
-    setIsSubmitting(true);
+    console.log(name, email, _date, _attendee, _notes);
+    // await router.push("/booking/create");
 
     return axios
-      .post("/api/booking/signup", {
-        name,
-        email,
-        password,
-      })
+      .post("/api/booking", { name, email, _date, _attendee, _notes, _duration })
       .then(() => {
         alert("success");
-        // console.log();
-        window.location.replace("/");
+        window.location.replace("/private");
       })
       .catch((e) => {
-        setIsSubmitting(false);
         const errorMessage = e.response?.data?.message;
         console.log(errorMessage);
         alert(errorMessage || e.message);
@@ -49,17 +58,17 @@ export default function Signup() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
-        <title>Sign up </title>
+        <title>Confirm a booking</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 ">
-        <h1 className="font-bold">Start your 14-day free trial </h1>
+        <h1 className="font-bold">Booking Confirmation </h1>
         <div className="w-full max-w-md">
           <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                Name
+                Your Name
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -67,40 +76,46 @@ export default function Signup() {
                 type="text"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
-                placeholder="Name"
+                placeholder="John doe"
               />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                Email address
+                Email Address
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="username"
-                type="text"
+                type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                placeholder="Email address"
+                placeholder="abc@mail.com"
               />
             </div>
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                Password
+                + Additional Guests
               </label>
-              <input
-                className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                placeholder="**********"
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                Additional Notes
+              </label>
+
+              <textarea
+                className="w-full h-16 px-3 py-2 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
+                onChange={(e) => setAdditionalNotes(e.target.value)}
+                defaultValue={additionalNotes}
+                readOnly={true}
               />
             </div>
+
             <div className="flex items-center justify-between">
               <button
                 className="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 bg-black rounded-lg focus:shadow-outline #hover:bg-indigo-800"
                 type="submit">
-                Sign up for free
+                Submit
               </button>
             </div>
           </form>
@@ -109,3 +124,5 @@ export default function Signup() {
     </div>
   );
 }
+
+export default BookingForm;

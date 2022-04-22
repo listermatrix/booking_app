@@ -2,7 +2,32 @@ import Head from "next/head";
 import Router from "next/router";
 import Script from "next/script";
 
-export default function Manage() {
+import prisma from "@helpers/prisma";
+
+export async function getServerSideProps() {
+  const bookings = await prisma.booking.findMany({
+    select: {
+      id: true,
+      additional_notes: true,
+      owner_name: true,
+      owner_email: true,
+      schedule_date: true,
+      duration: true,
+      attendee: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+  return {
+    props: {
+      data: bookings,
+    },
+  };
+}
+
+function Manage({ data }) {
   return (
     <>
       <Script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></Script>
@@ -32,7 +57,13 @@ export default function Manage() {
                 <button
                   onClick={() => Router.push("/booking/create")}
                   className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
-                  Create
+                  + Add Booking
+                </button>
+
+                <button
+                  onClick={() => Router.push("/attendee/create")}
+                  className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+                  + Add Attendee
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -75,28 +106,33 @@ export default function Manage() {
                         <table className="min-w-full">
                           <thead className="bg-white border-b"></thead>
                           <tbody>
-                            <tr className="bg-gray-100 border-b">
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                1
-                              </td>
-                              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                Mark
-                              </td>
-                              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                <div className="flex space-x-2 justify-center">
-                                  <button
-                                    type="button"
-                                    className="inline-block px-6 py-2 border-2 border-gray-800 text-gray-800 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out">
-                                    Cancel
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="inline-block px-6 py-2 border-2 border-gray-800 text-gray-800 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out">
-                                    Reschedule
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
+                            {data.map((booking, i) => (
+                              <tr className="bg-gray-100 border-b" key={i}>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                  {booking.schedule_date}
+                                </td>
+                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                  {booking.duration} Min Meeting between {booking.owner_name} and{" "}
+                                  {booking.attendee.name}
+                                  <br />
+                                  {booking.additional_notes}
+                                </td>
+                                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                  <div className="flex space-x-2 justify-center">
+                                    <button
+                                      type="button"
+                                      className="inline-block px-6 py-2 border-2 border-gray-800 text-gray-800 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out">
+                                      Cancel
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="inline-block px-6 py-2 border-2 border-gray-800 text-gray-800 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out">
+                                      Reschedule
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -125,3 +161,5 @@ export default function Manage() {
     </>
   );
 }
+
+export default Manage;

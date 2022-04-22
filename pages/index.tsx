@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
-import "tw-elements";
 
 export default function Index() {
   const { data: session, status } = useSession();
