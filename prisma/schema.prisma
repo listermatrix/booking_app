@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  //  url      = env("DATABASE_URL")
+  url      = "postgresql://testuser:oneness123@localhost:5432/booking_app?schema=public"
 }
 
 model User {
