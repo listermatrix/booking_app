@@ -32,16 +32,21 @@ function BookingForm({ data }) {
 
   const { data: session, status } = useSession();
 
-  const [name, setName] = useState(data[0].name ?? "");
-  const [email, setEmail] = useState(data[0].email ?? "");
+  let def_name = "";
+  let def_email = "";
+
+  if (data[0]) {
+    def_name = data[0].name;
+    def_email = data[0].email;
+  }
+
+  const [name, setName] = useState(def_name);
+  const [email, setEmail] = useState(def_email);
   // const [attendee, setAttendee] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState(_notes);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-
-    console.log(name, email, _date, _attendee, _notes);
-    // await router.push("/booking/create");
 
     return axios
       .post("/api/booking", { name, email, _date, _attendee, _notes, _duration })
