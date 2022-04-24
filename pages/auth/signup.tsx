@@ -28,7 +28,7 @@ export default function Signup() {
     setIsSubmitting(true);
 
     return axios
-      .post("/api/signup", {
+      .post("/api/auth/signup", {
         name,
         email,
         password,

@@ -9,6 +9,7 @@ datasource db {
   provider = "postgresql"
   url      = "postgres://irytulvmxlznjd:663206fe3707bd4e2c4e3c26c76372a7d417e7e8c321d5498505b2ceaa1a9937@ec2-3-209-124-113.compute-1.amazonaws.com:5432/d3o1ogrdi5hncb"
   //  url      = env("DATABASE_URL")
+  //    url      = "postgresql://testuser:oneness123@localhost:5432/booking_app?schema=public"
 }
 
 model User {
