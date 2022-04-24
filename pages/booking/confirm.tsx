@@ -31,8 +31,9 @@ function BookingForm({ data }) {
   const _notes = query.additionalNotes;
 
   const { data: session, status } = useSession();
-  const [name, setName] = useState(data[0].name);
-  const [email, setEmail] = useState(data[0].email);
+
+  const [name, setName] = useState(data[0].name ?? "");
+  const [email, setEmail] = useState(data[0].email ?? "");
   // const [attendee, setAttendee] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState(_notes);
 
